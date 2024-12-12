@@ -11,6 +11,15 @@
 
 2024-12-12  Björn Esser  <besser82 at fedoraproject.org>
 
+	libnss_tcb: Drop use of readdir_r(3).
+	In commit 72ef702a886c8a9749bdc01d89a57cdf0455318c we introduced a
+	replacment for the deprecated readdir_r(3) by using readdir(3) with
+	global thread-local storage.  As almost any operating system released
+	within the last eight years supports thread-local storage natively,
+	there is little to no reason keeping the potentially dangerous
+	fallback to readdir_r(3).
+	* libs/nss.c (_nss_tcb_getspnam_r): Drop use of readdir_r(3).
+
 	Makefile: Pass CFLAGS to the compiler when invoking the linker.
 	Some CFLAGS imply effects on the linker too (e.g., -fsanitize=),
 	so they must get passed within the linker rule as well.
