@@ -15,6 +15,14 @@ static __thread DIR *tcbdir = NULL;
 
 int _nss_tcb_setspent(void)
 {
+	if (!tcbdir) {
+		tcbdir = opendir(TCB_DIR);
+		if (!tcbdir)
+			return NSS_STATUS_UNAVAIL;
+	}
+	else
+		rewinddir(tcbdir);
+
 	return 1;
 }
 
@@ -100,11 +108,8 @@ int _nss_tcb_getspent_r(struct spwd *__result_buf,
 	off_t currpos;
 	int retval, saved_errno;
 
-	if (!tcbdir) {
-		tcbdir = opendir(TCB_DIR);
-		if (!tcbdir)
-			return NSS_STATUS_UNAVAIL;
-	}
+	if (!tcbdir)
+		return NSS_STATUS_UNAVAIL;
 
 	do {
 		currpos = telldir(tcbdir);
