@@ -1,5 +1,12 @@
 2021-12-18  Björn Esser  <besser82 at fedoraproject.org>
 
+	Add an option to omit the PAM module during build and install.
+	This may be needed in distribution packages when preparing a
+	bootstrap environment for new architectures.
+	* Make.defs: Add OMIT_PAM_MODULE flag.
+	* Makefile: Do not build/install the pam module if the
+	OMIT_PAM_MODULE flag is set.
+
 	* pam_tcb/Makefile: Move PAM_SO_SUFFIX to Make.defs.
 	* Make.defs: Likewise.
 
